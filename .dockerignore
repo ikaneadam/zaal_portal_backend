@@ -1,0 +1,8 @@
+.github
+node_modules
+db
+.env
+.gitignore
+compose.yaml
+Dockerfile
+README.md

@@ -1,0 +1,24 @@
+version: '3.1'
+services:
+  gotradeapi:
+    build: .
+    command: npm run start:docker
+    ports:
+      - 5000:5000
+    depends_on:
+        - db-persist
+    volumes:
+      - ./src:/usr/app/src:ro
+    env_file: '.env'
+
+  db-persist:
+    build: ./db
+    image: db_persist
+    ports:
+      - 5433:5433
+    env_file: '.env'
+
+  adminer:
+    image: dockette/adminer
+    ports:
+      - 6969:80
