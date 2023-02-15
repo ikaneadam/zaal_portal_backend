@@ -7,5 +7,4 @@ COPY package*.json ./
 RUN npm ci
 # copy all files
 COPY . .
-# build and serve application
-CMD npm run start
+

@@ -1,5 +1,6 @@
 import { DataSource } from "typeorm"
 import dotenv from "dotenv";
+import {Test} from "./entity/test";
 
 
 dotenv.config();
@@ -13,6 +14,6 @@ export const AppDataSource = new DataSource({
     port: Number(process.env.POSTGRES_PORT),
     synchronize: true,
     logging: false,
-    entities: []
+    entities: [Test]
 })
 
