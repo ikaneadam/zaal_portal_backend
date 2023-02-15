@@ -1,4 +1,4 @@
-# GOTRADE backend
+# Example backend
 
 Steps to run this project:
 
