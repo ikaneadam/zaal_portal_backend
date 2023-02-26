@@ -1,5 +1,4 @@
-import {Column, Entity, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn} from 'typeorm'
-import {Speler} from "./Speler";
+import {Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn} from 'typeorm'
 import {Team} from "./Team";
 import {Wedstrijd} from "./Wedstrijd";
 
@@ -18,4 +17,14 @@ export class ZaalSessie {
     @ManyToMany(() => Wedstrijd,{ eager : true})
     @JoinTable()
     Wedstrijden: Wedstrijd[];
+
+
+    @Column({ nullable: false, default: true})
+    isKlaar: Boolean  = false;
+
+    @Column({ nullable: true})
+    eindTijd: Date
+
+    @CreateDateColumn()
+    created_at: Date;
 }
