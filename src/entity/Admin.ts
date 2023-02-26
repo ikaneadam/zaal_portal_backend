@@ -1,10 +1,13 @@
 import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm'
 
 @Entity()
-export class Test {
+export class Admin {
     @PrimaryGeneratedColumn('uuid')
     UUID: string
 
     @Column({ nullable: false})
-    notification: string
+    Username: string;
+
+    @Column({ nullable: false})
+    Password: string;
 }

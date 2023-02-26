@@ -1,6 +1,6 @@
 import { DataSource } from "typeorm"
 import dotenv from "dotenv";
-import {Test} from "./entity/test";
+import {Test} from "./entity/ZaalSessie";
 
 
 dotenv.config();
