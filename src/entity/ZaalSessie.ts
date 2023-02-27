@@ -1,4 +1,10 @@
-import {Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn} from 'typeorm'
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    OneToMany,
+    PrimaryGeneratedColumn
+} from 'typeorm'
 import {Team} from "./Team";
 import {Wedstrijd} from "./Wedstrijd";
 
@@ -10,19 +16,16 @@ export class ZaalSessie {
     @Column({ nullable: false})
     Naam: string
 
-    @ManyToMany(() => Team,{ eager : true})
-    @JoinTable()
+    @OneToMany(() => Team, (team) => team.zaalSessie, { eager : true, cascade: ["insert"] })
     Teams: Team[];
 
-    @ManyToMany(() => Wedstrijd,{ eager : true})
-    @JoinTable()
+    @OneToMany(() => Wedstrijd, (wedstrijd) => wedstrijd.zaalSessie , { eager : true, cascade: ["insert"] })
     Wedstrijden: Wedstrijd[];
 
-
-    @Column({ nullable: false, default: true})
+    @Column({ nullable: false, default: true })
     isKlaar: Boolean  = false;
 
-    @Column({ nullable: true})
+    @Column({ nullable: true })
     eindTijd: Date
 
     @CreateDateColumn()

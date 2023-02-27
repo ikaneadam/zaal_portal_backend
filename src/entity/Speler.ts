@@ -1,21 +1,28 @@
-import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm'
+import {Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn} from 'typeorm'
+import {ZaalSessie} from "./ZaalSessie";
+import {Team} from "./Team";
+import {Wedstrijd} from "./Wedstrijd";
+import {Goal} from "./Goal";
 
 @Entity()
 export class Speler {
     @PrimaryGeneratedColumn('uuid')
     UUID: string
 
-    @Column({ nullable: false})
+    @ManyToMany(() => Team, Team => Team.Spelers)
+    Teams: Team[];
+
+    @OneToMany(() => Goal, (goal) => goal.Scoorder, { eager : true })
+    goals: Goal[];
+
+    @OneToMany(() => Goal, (goal) => goal.Assister, { eager : true })
+    assists: Goal[];
+
+    @Column({ nullable: false, unique: true})
     Naam: string
 
-    @Column({ nullable: false})
-    IamgeUrl: string
-
-    @Column({ nullable: false})
-    Goals: number
-
-    @Column({ nullable: false})
-    Assists: number
+    @Column({ nullable: true})
+    ImageUrl: string
 
     @Column({ nullable: false})
     Wins: number

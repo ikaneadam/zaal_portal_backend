@@ -1,22 +1,27 @@
-import {Column, Entity, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn} from 'typeorm'
-import {ZaalSessie} from "./ZaalSessie";
-import {Speler} from "./Speler";
+import {Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn} from 'typeorm'
 import {Team} from "./Team";
+import {Goal} from "./Goal";
+import {ZaalSessie} from "./ZaalSessie";
 
 @Entity()
 export class Wedstrijd {
     @PrimaryGeneratedColumn('uuid')
     UUID: string
 
-    @OneToOne(() => Team)
+    @ManyToOne(() => ZaalSessie, ZaalSessie => ZaalSessie.Wedstrijden)
+    zaalSessie: ZaalSessie
+
+    @OneToOne(() => Team, {cascade: true})
+    @JoinColumn()
     ThuisClub: Team
 
-    @OneToOne(() => Team)
+    @OneToOne(() => Team, {cascade: true})
+    @JoinColumn()
     UitClub: Team
 
-    @Column({ nullable: false})
-    ThuisScore: number
+    @OneToMany(() => Goal, (goal) => goal.wedstrijd, {cascade: true})
+    ThuisGoals: Goal[]
 
-    @Column({ nullable: false})
-    UitScore: number
+    @OneToMany(() => Goal, (goal) => goal.wedstrijd, {cascade: true})
+    UitGoals: Goal[]
 }

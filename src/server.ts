@@ -3,8 +3,8 @@ import cors from "cors";
 import express from "express";
 
 import dotenv from "dotenv";
+import SpelerController from "./controllers/SpelerController";
 
-import ExampleController from "./controllers/ExampleController";
 
 dotenv.config();
 
@@ -16,7 +16,7 @@ const server = new BackendApp({
         express.urlencoded({ extended: true })
     ],
     controllers: [
-        new ExampleController(),
+        new SpelerController(),
     ]
 })
 

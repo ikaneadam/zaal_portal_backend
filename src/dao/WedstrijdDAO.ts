@@ -3,6 +3,7 @@ import {AppDataSource} from "../data-source";
 import {Wedstrijd} from "../entity/Wedstrijd";
 import {ZaalSessie} from "../entity/ZaalSessie";
 import {Team} from "../entity/Team";
+import {Goal} from "../entity/Goal";
 
 class WedstrijdDAO {
     private wedstrijdRepository: Repository<Wedstrijd>
@@ -39,21 +40,21 @@ class WedstrijdDAO {
         return wedstrijd;
     }
 
-    public async createWedstrijd(uitclub: Team, thuisClub: Team): Promise<Wedstrijd> {
+    public async createWedstrijd(uitclub: Team, thuisClub: Team, thuisGoals: Goal[], uitGoals: Goal[]): Promise<Wedstrijd> {
         const wedstrijd = new Wedstrijd();
         wedstrijd.UitClub = uitclub;
         wedstrijd.ThuisClub = thuisClub;
-        wedstrijd.ThuisScore = 0;
-        wedstrijd.UitScore = 0;
+        wedstrijd.ThuisGoals = thuisGoals;
+        wedstrijd.UitGoals = uitGoals;
         return await this.wedstrijdRepository.save(wedstrijd)
     }
 
-    public async updateWedstrijd(wedstrijdUUID: string, uitclub: Team, thuisClub: Team, thuisScore: number, uitScore: number): Promise<Wedstrijd> {
+    public async updateWedstrijd(wedstrijdUUID: string, uitclub: Team, thuisClub: Team, thuisGoals: Goal[], uitGoals: Goal[]): Promise<Wedstrijd> {
         const wedstrijd = await this.wedstrijdRepository.findOne({where: {UUID: wedstrijdUUID}})
         wedstrijd.UitClub = uitclub;
         wedstrijd.ThuisClub = thuisClub;
-        wedstrijd.ThuisScore = thuisScore;
-        wedstrijd.UitScore = uitScore;
+        wedstrijd.ThuisGoals = thuisGoals;
+        wedstrijd.UitGoals = uitGoals;
         return await this.wedstrijdRepository.save(wedstrijd)
     }
 

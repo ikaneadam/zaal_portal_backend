@@ -2,12 +2,15 @@ import {Column, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn, Reposit
 import {AppDataSource} from "../data-source";
 import {Team} from "../entity/Team";
 import {Speler} from "../entity/Speler";
+import {ZaalSessie} from "../entity/ZaalSessie";
 
 class TeamDAO {
     private teamRepository: Repository<Team>
+    private zaalSessieRepository: Repository<ZaalSessie>
 
     constructor() {
         this.teamRepository = AppDataSource.getRepository(Team)
+        this.zaalSessieRepository = AppDataSource.getRepository(ZaalSessie)
     }
 
     public async doesTeamExist(UUID: string): Promise<Boolean> {
@@ -35,24 +38,25 @@ class TeamDAO {
         });
         return team;
     }
-//todo fix this add zaalsessie based on UUID OF THE ZAAL SESSIE
-    public async createTeam(uitclub: Team, thuisClub: Team): Promise<Team> {
+
+    public async createTeam(zaalSessieUUID: string, name: string, spelers: Speler[]): Promise<Team> {
+        const zaalSessie = await this.zaalSessieRepository.findOne( {where: {UUID: zaalSessieUUID }} )
         const team = new Team();
-
-
+        team.zaalSessie = zaalSessie
+        team.Naam = name
+        team.Spelers = spelers
         return await this.teamRepository.save(team)
     }
 
-    public async updateTeam(teamUUID: string, uitclub: Team, thuisClub: Team, thuisScore: number, uitScore: number): Promise<Team> {
-        const team = await this.teamRepository.findOne({where: {UUID: teamUUID}})
-
+    public async updateTeam(teamUUID: string, goals: number, loses: number, draws: number, naam: string): Promise<Team> {
+        const team = await this.teamRepository.findOne({where: {UUID: teamUUID }})
+        team.Naam = naam
         return await this.teamRepository.save(team)
     }
 
-    public async deleteteam(teamUUID: string): Promise<void> {
+    public async deleteTeam(teamUUID: string): Promise<void> {
         await this.teamRepository.delete(teamUUID)
     }
-
 }
 
 export default TeamDAO
