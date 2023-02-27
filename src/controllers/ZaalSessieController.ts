@@ -14,8 +14,6 @@ class SpelerController {
     public routes(){
         this.router.get(this.path, this.service.getSpeler)
         this.router.get(this.path, this.service.postSpeler)
-        this.router.get(this.path, this.service.putSpeler)
-        this.router.get(this.path, this.service.deleteSpeler)
     }
 }
 

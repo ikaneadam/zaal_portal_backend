@@ -3,7 +3,7 @@ import SpelerService from "../service/SpelerService";
 
 
 class SpelerController {
-    public path = '/api/speler/:id?'
+    public path = '/api/spelers/:id?'
     public router = express.Router()
     private service = new SpelerService()
 
@@ -13,9 +13,9 @@ class SpelerController {
 
     public routes(){
         this.router.get(this.path, this.service.getSpeler)
-        this.router.get(this.path, this.service.postSpeler)
-        this.router.get(this.path, this.service.putSpeler)
-        this.router.get(this.path, this.service.deleteSpeler)
+        this.router.post(this.path, this.service.postSpeler)
+        this.router.put(this.path, this.service.putSpeler)
+        this.router.delete(this.path, this.service.deleteSpeler)
     }
 }
 

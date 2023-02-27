@@ -16,27 +16,26 @@ class SpelerDAO {
     }
 
     public async getSpeler(UUID: string): Promise<Speler> {
-        const speler = await this.spelerRepository.findOne({
-                relations: {
-                    goals: true,
-                    assists: true
-                },
-                where: {
-                    UUID: UUID
-                }
-            }
-        )
+        const speler = await this.spelerRepository
+            .createQueryBuilder('Speler')
+            .leftJoinAndSelect('Speler.goals', 'goals')
+            .leftJoinAndSelect('Speler.assists', 'assists')
+            .loadRelationCountAndMap('Speler.goals', 'Speler.goals')
+            .loadRelationCountAndMap('Speler.assists', 'Speler.assists')
+            .where('user.UUID = :id', { id: UUID })
+            .getOne();
         return speler
     }
 
     public async getSpelers(): Promise<Speler[]> {
-        const spelers = await this.spelerRepository.find({
-            relations: {
-                goals: true,
-                assists: true
-            }
-        });
-        return spelers;
+        const spelers = await this.spelerRepository
+            .createQueryBuilder('Speler')
+            .leftJoinAndSelect('Speler.goals', 'goals')
+            .leftJoinAndSelect('Speler.assists', 'assists')
+            .loadRelationCountAndMap('Speler.goals', 'Speler.goals')
+            .loadRelationCountAndMap('Speler.assists', 'Speler.assists')
+            .getMany();
+        return spelers
     }
 
     public async createSpeler(naam: string, draws: number, wins: number, loses: number): Promise<Speler> {
