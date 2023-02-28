@@ -16,4 +16,13 @@ export class Team {
     @ManyToMany(() => Speler,{ eager : true})
     @JoinTable()
     Spelers: Speler[];
+
+    @Column({ nullable: false})
+    Wins: number
+
+    @Column({ nullable: false})
+    loses: number
+
+    @Column({ nullable: false})
+    Draws: number
 }

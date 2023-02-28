@@ -31,28 +31,21 @@ class SpelerDAO {
         const spelers = await this.spelerRepository
             .createQueryBuilder('Speler')
             .leftJoinAndSelect('Speler.goals', 'goals')
-            .leftJoinAndSelect('Speler.assists', 'assists')
             .loadRelationCountAndMap('Speler.goals', 'Speler.goals')
-            .loadRelationCountAndMap('Speler.assists', 'Speler.assists')
+            .loadRelationCountAndMap('Speler.Teams.wins', '')
             .getMany();
         return spelers
     }
 
-    public async createSpeler(naam: string, draws: number, wins: number, loses: number): Promise<Speler> {
+    public async createSpeler(naam: string): Promise<Speler> {
         const speler = new Speler();
         speler.Naam = naam
-        speler.Draws = draws
-        speler.Wins = wins
-        speler.loses = loses
         return await this.spelerRepository.save(speler)
     }
 
-    public async updateSpeler(spelerUUID: string, naam: string, draws: number, wins: number, loses: number): Promise<Speler> {
+    public async updateSpeler(spelerUUID: string, naam: string): Promise<Speler> {
         const speler = await this.spelerRepository.findOne({where: {UUID: spelerUUID}})
         speler.Naam = naam
-        speler.Draws = draws
-        speler.Wins = wins
-        speler.loses = loses
         return await this.spelerRepository.save(speler)
     }
 

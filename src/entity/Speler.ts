@@ -15,21 +15,12 @@ export class Speler {
     @OneToMany(() => Goal, (goal) => goal.Scoorder, { eager : true })
     goals: Goal[];
 
-    @OneToMany(() => Goal, (goal) => goal.Assister, { eager : true })
-    assists: Goal[];
+    // @OneToMany(() => Goal, (goal) => goal.Assister, { eager : true })
+    // assists: Goal[];
 
     @Column({ nullable: false, unique: true})
     Naam: string
 
     @Column({ nullable: true})
     ImageUrl: string
-
-    @Column({ nullable: false})
-    Wins: number
-
-    @Column({ nullable: false})
-    loses: number
-
-    @Column({ nullable: false})
-    Draws: number
 }

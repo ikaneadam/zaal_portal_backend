@@ -53,10 +53,6 @@ class SpelerService {
 
     private spelerSchema = joi.object({
         name: joi.string().min(2).required(),
-        imageUrl: joi.string().min(5).required(),
-        wins: joi.number().required(),
-        loses: joi.number().required(),
-        draws: joi.number().required()
     })
 
     public postSpeler =  async (req: Request, res: Response) => {
@@ -66,7 +62,7 @@ class SpelerService {
         }
 
         try {
-            const product = await this.doa.createSpeler(req.body.name, req.body.draws, req.body.wins, req.body.loses)
+            const product = await this.doa.createSpeler(req.body.name)
             return res.status(200).send(product)
         } catch (error) {
             return res.status(500).send()
@@ -82,7 +78,7 @@ class SpelerService {
         try {
             const spelerUUID = String(req.params.id)
             await this.handleNonExistingSpeler(spelerUUID, res)
-            const speler = await this.doa.updateSpeler(spelerUUID, req.body.name, req.body.draws, req.body.wins, req.body.loses)
+            const speler = await this.doa.updateSpeler(spelerUUID, req.body.name)
             return res.status(200).send(speler)
         } catch (error) {
             return res.status(500).send()
