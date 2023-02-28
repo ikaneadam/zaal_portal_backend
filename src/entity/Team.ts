@@ -1,4 +1,4 @@
-import {Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn} from 'typeorm'
+import {Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from 'typeorm'
 import {ZaalSessie} from "./ZaalSessie";
 import {Speler} from "./Speler";
 
@@ -10,19 +10,19 @@ export class Team {
     @Column({ nullable: false})
     Naam: string
 
-    @OneToMany(() => ZaalSessie, ZaalSessie => ZaalSessie.Teams)
+    @ManyToOne(() => ZaalSessie, ZaalSessie => ZaalSessie.Teams)
     zaalSessie: ZaalSessie
 
-    @ManyToMany(() => Speler,{ eager : true})
+    @ManyToMany(() => Speler, (speler) => speler.Teams)
     @JoinTable()
     Spelers: Speler[];
 
-    @Column({ nullable: false})
+    @Column({ nullable: true})
     Wins: number
 
-    @Column({ nullable: false})
+    @Column({ nullable: true})
     loses: number
 
-    @Column({ nullable: false})
+    @Column({ nullable: true})
     Draws: number
 }

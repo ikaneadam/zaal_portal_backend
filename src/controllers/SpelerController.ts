@@ -1,6 +1,6 @@
 import * as express from 'express'
 import SpelerService from "../service/SpelerService";
-
+import fileUpload from "../middleware/fileUpload";
 
 class SpelerController {
     public path = '/api/spelers/:id?'
@@ -13,7 +13,7 @@ class SpelerController {
 
     public routes(){
         this.router.get(this.path, this.service.getSpeler)
-        this.router.post(this.path, this.service.postSpeler)
+        this.router.post(this.path, fileUpload.single("picture"), this.service.postSpeler)
         this.router.put(this.path, this.service.putSpeler)
         this.router.delete(this.path, this.service.deleteSpeler)
     }

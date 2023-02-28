@@ -48,9 +48,10 @@ class TeamDAO {
         return await this.teamRepository.save(team)
     }
 
-    public async updateTeam(teamUUID: string, goals: number, loses: number, draws: number, naam: string): Promise<Team> {
+    public async updateTeam(teamUUID: string, goals: number, loses: number, draws: number, naam: string, spelers: Speler[]): Promise<Team> {
         const team = await this.teamRepository.findOne({where: {UUID: teamUUID }})
         team.Naam = naam
+        team.Spelers = spelers
         return await this.teamRepository.save(team)
     }
 

@@ -17,7 +17,7 @@ class ZaalSessieDAO {
     }
 
     public async getZaalSessie(UUID: string): Promise<ZaalSessie> {
-        const zaalSessie = await this.zaalSessieRepository.find({
+        const zaalSessie = await this.zaalSessieRepository.findOne({
                 relations: {
                     Wedstrijden: true,
                     Teams: true,
@@ -26,7 +26,7 @@ class ZaalSessieDAO {
                     UUID: UUID}
             }
         )
-        return zaalSessie[0]
+        return zaalSessie
     }
 
     public async getZaalSessies(): Promise<ZaalSessie[]> {
@@ -39,20 +39,15 @@ class ZaalSessieDAO {
         return zaalSessies;
     }
 
-    public async createZaalSessie(teams: Team[], wedstrijden: Wedstrijd[], naam: string): Promise<ZaalSessie> {
+    public async createZaalSessie(naam: string): Promise<ZaalSessie> {
         const zaalSessie = new ZaalSessie();
-        zaalSessie.Teams = teams;
-        zaalSessie.Wedstrijden = wedstrijden;
         zaalSessie.Naam = naam;
         return await this.zaalSessieRepository.save(zaalSessie)
     }
 
-    public async updateZaalSessie(zaalSessieUUID: string, teams: Team[], wedstrijden: Wedstrijd[], naam: string, eindTijd: Date, isklaar: boolean): Promise<ZaalSessie> {
+    public async updateZaalSessie(zaalSessieUUID: string, naam: string, isklaar: boolean): Promise<ZaalSessie> {
         const zaalSessie = await this.zaalSessieRepository.findOne({where: {UUID: zaalSessieUUID}})
-        zaalSessie.Teams = teams;
-        zaalSessie.Wedstrijden = wedstrijden;
         zaalSessie.Naam = naam;
-        zaalSessie.eindTijd = eindTijd;
         zaalSessie.isKlaar = isklaar;
         return await this.zaalSessieRepository.save(zaalSessie)
     }

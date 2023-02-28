@@ -4,6 +4,7 @@ import express from "express";
 
 import dotenv from "dotenv";
 import SpelerController from "./controllers/SpelerController";
+import ZaalSessieController from "./controllers/ZaalSessieController";
 
 
 dotenv.config();
@@ -17,6 +18,7 @@ const server = new BackendApp({
     ],
     controllers: [
         new SpelerController(),
+        new ZaalSessieController()
     ]
 })
 

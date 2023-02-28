@@ -16,17 +16,14 @@ export class ZaalSessie {
     @Column({ nullable: false})
     Naam: string
 
-    @OneToMany(() => Team, (team) => team.zaalSessie, { eager : true, cascade: ["insert"] })
+    @OneToMany(() => Team, (team) => team.zaalSessie, {eager: true})
     Teams: Team[];
 
-    @OneToMany(() => Wedstrijd, (wedstrijd) => wedstrijd.zaalSessie , { eager : true, cascade: ["insert"] })
+    @OneToMany(() => Wedstrijd, (wedstrijd) => wedstrijd.zaalSessie)
     Wedstrijden: Wedstrijd[];
 
     @Column({ nullable: false, default: true })
     isKlaar: Boolean  = false;
-
-    @Column({ nullable: true })
-    eindTijd: Date
 
     @CreateDateColumn()
     created_at: Date;

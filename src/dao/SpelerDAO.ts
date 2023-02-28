@@ -1,7 +1,6 @@
 import {Repository} from "typeorm";
 import {AppDataSource} from "../data-source";
 import {Speler} from "../entity/Speler";
-import {Team} from "../entity/Team";
 
 class SpelerDAO {
     private spelerRepository: Repository<Speler>
@@ -18,28 +17,36 @@ class SpelerDAO {
     public async getSpeler(UUID: string): Promise<Speler> {
         const speler = await this.spelerRepository
             .createQueryBuilder('Speler')
-            .leftJoinAndSelect('Speler.goals', 'goals')
-            .leftJoinAndSelect('Speler.assists', 'assists')
-            .loadRelationCountAndMap('Speler.goals', 'Speler.goals')
-            .loadRelationCountAndMap('Speler.assists', 'Speler.assists')
-            .where('user.UUID = :id', { id: UUID })
-            .getOne();
+            .leftJoin('Speler.Teams', 'teams')
+            .leftJoin('Speler.goals', 'goals')
+            .addSelect('Count(goals.UUID)', 'goals')
+            .addSelect('COALESCE(SUM(teams.Wins),0)', 'wins')
+            .addSelect('COALESCE(SUM(teams.loses),0)', 'loses')
+            .addSelect('COALESCE(SUM(teams.Draws),0)', 'draws')
+            .groupBy('Speler.UUID')
+            .where('Speler.UUID = :id', { id: UUID })
+            .getRawOne();
         return speler
     }
 
     public async getSpelers(): Promise<Speler[]> {
         const spelers = await this.spelerRepository
             .createQueryBuilder('Speler')
-            .leftJoinAndSelect('Speler.goals', 'goals')
-            .loadRelationCountAndMap('Speler.goals', 'Speler.goals')
-            .loadRelationCountAndMap('Speler.Teams.wins', '')
-            .getMany();
+            .leftJoin('Speler.Teams', 'teams')
+            .leftJoin('Speler.goals', 'goals')
+            .addSelect('Count(goals.UUID)', 'goals')
+            .addSelect('COALESCE(SUM(teams.Wins),0)', 'wins')
+            .addSelect('COALESCE(SUM(teams.loses),0)', 'loses')
+            .addSelect('COALESCE(SUM(teams.Draws),0)', 'draws')
+            .groupBy('Speler.UUID')
+            .getRawMany();
         return spelers
     }
 
-    public async createSpeler(naam: string): Promise<Speler> {
+    public async createSpeler(naam: string, imageUrl: string): Promise<Speler> {
         const speler = new Speler();
         speler.Naam = naam
+        speler.ImageUrl = imageUrl
         return await this.spelerRepository.save(speler)
     }
 

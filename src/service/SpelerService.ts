@@ -38,6 +38,7 @@ class SpelerService {
             const product = await this.doa.getSpeler(req.params.id)
             return res.status(200).send(product)
         }catch (e){
+            console.log(e)
             return res.status(500).send()
         }
     }
@@ -47,6 +48,7 @@ class SpelerService {
             const spelers = await this.doa.getSpelers()
             return res.status(200).send(spelers)
         }catch (e){
+            console.log(e)
             return res.status(500).send()
         }
     }
@@ -62,7 +64,13 @@ class SpelerService {
         }
 
         try {
-            const product = await this.doa.createSpeler(req.body.name)
+            const file = req.file
+
+            if (file === undefined || file === null) {
+                return res.status(400).send('Please choose a file')
+            }
+
+            const product = await this.doa.createSpeler(req.body.name, file.filename)
             return res.status(200).send(product)
         } catch (error) {
             return res.status(500).send()
@@ -86,11 +94,6 @@ class SpelerService {
     }
 
     public deleteSpeler =  async (req: Request, res: Response) => {
-        const { error } = this.spelerSchema.validate(req.body)
-        if (error) {
-            return res.status(400).send(error.details[0].message)
-        }
-
         try {
             const spelerUUID = String(req.params.id)
             await this.handleNonExistingSpeler(spelerUUID, res)

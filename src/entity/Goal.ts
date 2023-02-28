@@ -14,6 +14,7 @@ export class Goal {
     // @ManyToOne(() => Speler)
     // Assister: Speler
 
-    @ManyToOne(() => Wedstrijd)
+    @ManyToOne(() => Wedstrijd, wedstrijd => wedstrijd.UitGoals)
+    @ManyToOne(() => Wedstrijd, wedstrijd => wedstrijd.ThuisGoals)
     wedstrijd: Wedstrijd
 }
