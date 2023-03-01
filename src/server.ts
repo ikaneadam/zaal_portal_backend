@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import SpelerController from "./controllers/SpelerController";
 import ZaalSessieController from "./controllers/ZaalSessieController";
 import TeamController from "./controllers/TeamController";
+import WedstrijdController from "./controllers/WedstrijdController";
 
 
 dotenv.config();
@@ -20,7 +21,8 @@ const server = new BackendApp({
     controllers: [
         new SpelerController(),
         new ZaalSessieController(),
-        new TeamController()
+        new TeamController(),
+        new WedstrijdController()
     ]
 })
 

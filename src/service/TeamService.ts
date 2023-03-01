@@ -51,7 +51,7 @@ class TeamService {
 
     private getSingleTeam =  async (teamUUID: string, req: Request, res: Response) => {
         try{
-            // eigenlijk gaat het fout omdat hij nu in het algemeen kijkt naar een uuid en niet naar de combinatie van team en zaalsessie
+            // eigenlijk gaat is dit fout omdat hij nu in het algemeen kijkt naar een uuid en niet naar de combinatie van team en zaalsessie
             await this.handleNonExistingTeam(teamUUID, res)
             const team = await this.teamDAO.getTeam(teamUUID)
             return res.status(200).send(team)
@@ -69,20 +69,67 @@ class TeamService {
         }
     }
 
+    private speler = joi.object().keys({
+        UUID: joi.string().guid().required(),
+        Naam: joi.string().min(5).required(),
+    })
+
     private teamSchema = joi.object({
-        Naam: joi.string().min(3).required()
+        Naam: joi.string().min(3).required(),
+        Spelers: joi.array().items(this.speler).required()
     })
 
     public postTeam =  async (req: Request, res: Response) => {
+        const zaalSessieUUID = req.params.zaalSessieId
+        await this.handleNonExistingZaalSessie(zaalSessieUUID, res)
 
+        const { error } = this.teamSchema.validate(req.body)
+        if (error) {
+            return res.status(400).send(error.details[0].message)
+        }
+
+        try{
+            const teams = await this.teamDAO.createTeam(zaalSessieUUID, req.body.Naam, req.body.Spelers)
+            return res.status(200).send(teams)
+        }catch (e){
+            return res.status(500).send()
+        }
     }
 
-    public putTeam =  async (req: Request, res: Response) => {
+    private teamUpdateSchema = joi.object({
+        Naam: joi.string().min(3).required(),
+        Spelers: joi.array().items(this.speler).required(),
+        Wins: joi.number().greater(0).required(),
+        loses: joi.number().greater(0).required(),
+        Draws: joi.number().greater(0).required(),
+    })
 
+    public putTeam =  async (req: Request, res: Response) => {
+        const teamUUID = req.params.teamId
+        await this.handleNonExistingTeam(teamUUID, res)
+
+        const { error } = this.teamUpdateSchema.validate(req.body)
+        if (error) {
+            return res.status(400).send(error.details[0].message)
+        }
+
+        try{
+            const teams = await this.teamDAO.updateTeam(teamUUID, req.body.loses, req.body.Draws, req.body.Wins, req.body.Naam, req.body.Spelers)
+            return res.status(200).send(teams)
+        }catch (e){
+            return res.status(500).send()
+        }
     }
 
     public deleteTeam =  async (req: Request, res: Response) => {
-
+        try {
+            const teamUUID = req.params.teamId
+            await this.handleNonExistingTeam(teamUUID, res)
+            await this.teamDAO.deleteTeam(teamUUID)
+            return res.status(200).send()
+        } catch (error) {
+            return res.status(500).send()
+        }
     }
 
 }

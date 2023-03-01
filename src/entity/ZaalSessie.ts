@@ -23,7 +23,7 @@ export class ZaalSessie {
     Wedstrijden: Wedstrijd[];
 
     @Column({ nullable: false, default: true })
-    isKlaar: Boolean  = false;
+    isKlaar: Boolean = false;
 
     @CreateDateColumn()
     created_at: Date;

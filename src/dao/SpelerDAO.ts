@@ -14,15 +14,20 @@ class SpelerDAO {
         return speler !== null
     }
 
+    //only difference betwee these queries is the where so not that dry..
+
     public async getSpeler(UUID: string): Promise<Speler> {
         const speler = await this.spelerRepository
             .createQueryBuilder('Speler')
+            .select('Speler.UUID as UUID')
+            .addSelect('Speler.Naam as Naam')
+            .addSelect('Speler.ImageUrl as ImageUrl')
             .leftJoin('Speler.Teams', 'teams')
             .leftJoin('Speler.goals', 'goals')
-            .addSelect('Count(goals.UUID)', 'goals')
-            .addSelect('COALESCE(SUM(teams.Wins),0)', 'wins')
-            .addSelect('COALESCE(SUM(teams.loses),0)', 'loses')
-            .addSelect('COALESCE(SUM(teams.Draws),0)', 'draws')
+            .addSelect('Count(DISTINCT(goals))', 'goals')
+            .addSelect('COALESCE(SUM(DISTINCT(teams.Wins)),0)', 'wins')
+            .addSelect('COALESCE(SUM(DISTINCT(teams.loses)),0)', 'loses')
+            .addSelect('COALESCE(SUM(DISTINCT(teams.Draws)),0)', 'draws')
             .groupBy('Speler.UUID')
             .where('Speler.UUID = :id', { id: UUID })
             .getRawOne();
@@ -32,12 +37,15 @@ class SpelerDAO {
     public async getSpelers(): Promise<Speler[]> {
         const spelers = await this.spelerRepository
             .createQueryBuilder('Speler')
+            .select('Speler.UUID as UUID')
+            .addSelect('Speler.Naam as Naam')
+            .addSelect('Speler.ImageUrl as ImageUrl')
             .leftJoin('Speler.Teams', 'teams')
             .leftJoin('Speler.goals', 'goals')
-            .addSelect('Count(goals.UUID)', 'goals')
-            .addSelect('COALESCE(SUM(teams.Wins),0)', 'wins')
-            .addSelect('COALESCE(SUM(teams.loses),0)', 'loses')
-            .addSelect('COALESCE(SUM(teams.Draws),0)', 'draws')
+            .addSelect('Count(DISTINCT(goals))', 'goals')
+            .addSelect('COALESCE(SUM(DISTINCT(teams.Wins)),0)', 'wins')
+            .addSelect('COALESCE(SUM(DISTINCT(teams.loses)),0)', 'loses')
+            .addSelect('COALESCE(SUM(DISTINCT(teams.Draws)),0)', 'draws')
             .groupBy('Speler.UUID')
             .getRawMany();
         return spelers

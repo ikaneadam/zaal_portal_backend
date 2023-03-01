@@ -19,9 +19,9 @@ export class Wedstrijd {
     @JoinColumn()
     UitClub: Team
 
-    @OneToMany(() => Goal, (goal) => goal.wedstrijd, {cascade: true})
+    @OneToMany(() => Goal, (goal) => goal.thuiSwedstrijd, {cascade: ["insert"], eager: true})
     ThuisGoals: Goal[]
 
-    @OneToMany(() => Goal, (goal) => goal.wedstrijd, {cascade: true})
+    @OneToMany(() => Goal, (goal) => goal.uiTwedstrijd, {cascade: ["insert"], eager: true})
     UitGoals: Goal[]
 }

@@ -13,16 +13,16 @@ export class Team {
     @ManyToOne(() => ZaalSessie, ZaalSessie => ZaalSessie.Teams)
     zaalSessie: ZaalSessie
 
-    @ManyToMany(() => Speler, (speler) => speler.Teams)
+    @ManyToMany(() => Speler, (speler) => speler.Teams, {eager: true})
     @JoinTable()
     Spelers: Speler[];
 
-    @Column({ nullable: true})
-    Wins: number
+    @Column({ nullable: true, default: 0})
+    Wins: number = 0
 
-    @Column({ nullable: true})
-    loses: number
+    @Column({ nullable: true, default: 0})
+    loses: number = 0
 
-    @Column({ nullable: true})
-    Draws: number
+    @Column({ nullable: true, default: 0})
+    Draws: number = 0
 }

@@ -1,8 +1,6 @@
 import {Repository} from "typeorm";
 import {AppDataSource} from "../data-source";
 import {ZaalSessie} from "../entity/ZaalSessie";
-import {Team} from "../entity/Team";
-import {Wedstrijd} from "../entity/Wedstrijd";
 
 class ZaalSessieDAO {
     private zaalSessieRepository: Repository<ZaalSessie>

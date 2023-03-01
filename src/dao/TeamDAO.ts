@@ -43,19 +43,26 @@ class TeamDAO {
         return team;
     }
 
-    public async createTeam(zaalSessieUUID: string, name: string, spelers: Speler[]): Promise<Team> {
-        const zaalSessie = await this.zaalSessieRepository.findOne( {where: {UUID: zaalSessieUUID }} )
-        const team = new Team();
-        team.zaalSessie = zaalSessie
-        team.Naam = name
-        team.Spelers = spelers
-        return await this.teamRepository.save(team)
+    public async createTeam(zaalSessieUUID: string, name: string, spelers: Speler[]): Promise<Team | never> {
+        try{
+            const zaalSessie = await this.zaalSessieRepository.findOne( {where: {UUID: zaalSessieUUID }} )
+            const team = new Team();
+            team.zaalSessie = zaalSessie
+            team.Naam = name
+            team.Spelers = spelers
+            return await this.teamRepository.save(team)
+        }catch (e){
+            throw new Error();
+        }
     }
 
-    public async updateTeam(teamUUID: string, goals: number, loses: number, draws: number, naam: string, spelers: Speler[]): Promise<Team> {
+    public async updateTeam(teamUUID: string, loses: number, draws: number, wins: number, naam: string, spelers: Speler[]): Promise<Team> {
         const team = await this.teamRepository.findOne({where: {UUID: teamUUID }})
         team.Naam = naam
         team.Spelers = spelers
+        team.loses = loses
+        team.Wins = wins
+        team.Draws = draws
         return await this.teamRepository.save(team)
     }
 
