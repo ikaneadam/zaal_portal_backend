@@ -14,11 +14,13 @@ class SpelerService {
 
     private async handleNonExistingSpeler(spelerUUID: string, res: Response){
         if (!isUUID(spelerUUID)) {
-            return res.status(404).send()
+            res.status(404).send()
+            return
         }
 
         if (!await this.doa.doesSpelerExist(spelerUUID)){
-            return res.status(404).send()
+            res.status(404).send()
+            return
         }
 
     }

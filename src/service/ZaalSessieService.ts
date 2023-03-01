@@ -13,11 +13,13 @@ class ZaalSessieService {
 
     private async handleNonExistingZaalSessie(zaalSessieUUID: string, res: Response){
         if (!isUUID(zaalSessieUUID)) {
-            return res.status(404).send()
+            res.status(404).send()
+            return
         }
 
         if (!await this.doa.doesZaalSessieExist(zaalSessieUUID)){
-            return res.status(404).send()
+            res.status(404).send()
+            return
         }
 
     }

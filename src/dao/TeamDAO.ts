@@ -30,10 +30,14 @@ class TeamDAO {
         return team[0]
     }
 
-    public async getTeams(): Promise<Team[]> {
+    public async getTeams(zaalSessieUUID: string): Promise<Team[]> {
         const team = await this.teamRepository.find({
             relations: {
                 Spelers: true
+            },
+            where: { zaalSessie: {
+                UUID: zaalSessieUUID
+                }
             }
         });
         return team;
