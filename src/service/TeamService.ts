@@ -71,12 +71,12 @@ class TeamService {
 
     private speler = joi.object().keys({
         UUID: joi.string().guid().required(),
-        Naam: joi.string().min(5).required(),
+        name: joi.string().min(5).required(),
     })
 
     private teamSchema = joi.object({
-        Naam: joi.string().min(3).required(),
-        Spelers: joi.array().items(this.speler).required()
+        name: joi.string().min(3).required(),
+        spelers: joi.array().items(this.speler).required()
     })
 
     public postTeam =  async (req: Request, res: Response) => {
@@ -89,7 +89,7 @@ class TeamService {
         }
 
         try{
-            const teams = await this.teamDAO.createTeam(zaalSessieUUID, req.body.Naam, req.body.Spelers)
+            const teams = await this.teamDAO.createTeam(zaalSessieUUID, req.body.name, req.body.spelers)
             return res.status(200).send(teams)
         }catch (e){
             return res.status(500).send()
@@ -97,11 +97,11 @@ class TeamService {
     }
 
     private teamUpdateSchema = joi.object({
-        Naam: joi.string().min(3).required(),
-        Spelers: joi.array().items(this.speler).required(),
-        Wins: joi.number().greater(0).required(),
+        name: joi.string().min(3).required(),
+        spelers: joi.array().items(this.speler).required(),
+        wins: joi.number().greater(0).required(),
         loses: joi.number().greater(0).required(),
-        Draws: joi.number().greater(0).required(),
+        draws: joi.number().greater(0).required(),
     })
 
     public putTeam =  async (req: Request, res: Response) => {
@@ -114,7 +114,7 @@ class TeamService {
         }
 
         try{
-            const teams = await this.teamDAO.updateTeam(teamUUID, req.body.loses, req.body.Draws, req.body.Wins, req.body.Naam, req.body.Spelers)
+            const teams = await this.teamDAO.updateTeam(teamUUID, req.body.loses, req.body.draws, req.body.wins, req.body.name, req.body.spelers)
             return res.status(200).send(teams)
         }catch (e){
             return res.status(500).send()

@@ -87,8 +87,8 @@ class WedstrijdService {
     }
 
     private wedstrijdSchema = joi.object({
-        ThuisClubUUID: joi.string().guid().required(),
-        UitClubUUID: joi.string().guid().required(),
+        thuisClubUUID: joi.string().guid().required(),
+        uitClubUUID: joi.string().guid().required(),
     })
 
     public postWedstrijd =  async (req: Request, res: Response) => {
@@ -99,10 +99,10 @@ class WedstrijdService {
         if (error) {
             return res.status(400).send(error.details[0].message)
         }
-        await this.handleNonExistingTeam(req.body.ThuisClubUUID, res)
-        await this.handleNonExistingTeam(req.body.UitClubUUID, res)
+        await this.handleNonExistingTeam(req.body.thuisClubUUID, res)
+        await this.handleNonExistingTeam(req.body.uitClubUUID, res)
         try{
-            const team = await this.wedstrijdDAO.createWedstrijd(req.body.ThuisClubUUID, req.body.UitClubUUID, zaalSessieUUID)
+            const team = await this.wedstrijdDAO.createWedstrijd(req.body.thuisClubUUID, req.body.uitClubUUID, zaalSessieUUID)
             return res.status(200).send(team)
         }catch (e){
             return res.status(500).send()
@@ -111,7 +111,7 @@ class WedstrijdService {
 
     // this.router.post(this.path + "/goal", this.service.postAddGoalToWedstrijd)
     private goal = joi.object({
-        Scoorder: joi.string().guid().required(),
+        scoorder: joi.string().guid().required(),
     })
 
     private addGoalSchema = joi.object({

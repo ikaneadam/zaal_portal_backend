@@ -7,8 +7,8 @@ export class Speler {
     @PrimaryGeneratedColumn('uuid')
     UUID: string
 
-    @ManyToMany(() => Team, team => team.Spelers)
-    Teams: Team[];
+    @ManyToMany(() => Team, team => team.spelers)
+    teams: Team[];
 
     @OneToMany(() => Goal, (goal) => goal.Scoorder)
     goals: Goal[];
@@ -17,8 +17,8 @@ export class Speler {
     // assists: Goal[];
 
     @Column({ nullable: false, unique: true})
-    Naam: string
+    name: string
 
     @Column({ nullable: true})
-    ImageUrl: string
+    imageUrl: string
 }

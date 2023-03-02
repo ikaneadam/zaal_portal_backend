@@ -14,10 +14,10 @@ export class Goal {
     // @ManyToOne(() => Speler)
     // Assister: Speler
 
-    @ManyToOne(() => Wedstrijd, wedstrijd => wedstrijd.UitGoals)
+    @ManyToOne(() => Wedstrijd, wedstrijd => wedstrijd.uitGoals)
     uiTwedstrijd: Wedstrijd
 
-    @ManyToOne(() => Wedstrijd, wedstrijd => wedstrijd.ThuisGoals)
+    @ManyToOne(() => Wedstrijd, wedstrijd => wedstrijd.thuisGoals)
     thuiSwedstrijd: Wedstrijd
 
     @CreateDateColumn()

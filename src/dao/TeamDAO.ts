@@ -21,7 +21,7 @@ class TeamDAO {
     public async getTeam(UUID: string): Promise<Team> {
         const team = await this.teamRepository.find({
                 relations: {
-                    Spelers: true
+                    spelers: true
                 },
                 where: {
                     UUID: UUID}
@@ -33,7 +33,7 @@ class TeamDAO {
     public async getTeams(zaalSessieUUID: string): Promise<Team[]> {
         const team = await this.teamRepository.find({
             relations: {
-                Spelers: true
+                spelers: true
             },
             where: { zaalSessie: {
                 UUID: zaalSessieUUID
@@ -48,8 +48,8 @@ class TeamDAO {
             const zaalSessie = await this.zaalSessieRepository.findOne( {where: {UUID: zaalSessieUUID }} )
             const team = new Team();
             team.zaalSessie = zaalSessie
-            team.Naam = name
-            team.Spelers = spelers
+            team.name = name
+            team.spelers = spelers
             return await this.teamRepository.save(team)
         }catch (e){
             throw new Error();
@@ -58,11 +58,11 @@ class TeamDAO {
 
     public async updateTeam(teamUUID: string, loses: number, draws: number, wins: number, naam: string, spelers: Speler[]): Promise<Team> {
         const team = await this.teamRepository.findOne({where: {UUID: teamUUID }})
-        team.Naam = naam
-        team.Spelers = spelers
+        team.name = naam
+        team.spelers = spelers
         team.loses = loses
-        team.Wins = wins
-        team.Draws = draws
+        team.wins = wins
+        team.draws = draws
         return await this.teamRepository.save(team)
     }
 

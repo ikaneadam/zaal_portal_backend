@@ -14,13 +14,13 @@ export class ZaalSessie {
     UUID: string
 
     @Column({ nullable: false})
-    Naam: string
+    name: string
 
     @OneToMany(() => Team, (team) => team.zaalSessie, {eager: true})
-    Teams: Team[];
+    teams: Team[];
 
     @OneToMany(() => Wedstrijd, (wedstrijd) => wedstrijd.zaalSessie)
-    Wedstrijden: Wedstrijd[];
+    wedstrijden: Wedstrijd[];
 
     @Column({ nullable: false, default: true })
     isKlaar: Boolean = false;

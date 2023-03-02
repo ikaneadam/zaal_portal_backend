@@ -30,8 +30,8 @@ class WedstrijdDAO {
     public async getWedstrijd(UUID: string): Promise<Wedstrijd> {
         const wedstrijd = await this.wedstrijdRepository.findOne({
                 relations: {
-                    ThuisClub: true,
-                    UitClub: true,
+                    thuisClub: true,
+                    uitClub: true,
                 },
                 where: {
                     UUID: UUID}
@@ -43,10 +43,10 @@ class WedstrijdDAO {
     public async getWedstrijden(ZaalSessieUUID: string): Promise<Wedstrijd[]> {
         const wedstrijd = await this.wedstrijdRepository.find({
             relations: {
-                ThuisClub: true,
-                UitClub: true,
-                UitGoals: true,
-                ThuisGoals: true
+                thuisClub: true,
+                uitClub: true,
+                uitGoals: true,
+                thuisGoals: true
             },
             where: {
                 zaalSessie: {
@@ -63,18 +63,18 @@ class WedstrijdDAO {
         const zaalSessie: ZaalSessie = await this.zaalSessieDAO.getZaalSessie(zaalSessieUUID)
 
         const wedstrijd = new Wedstrijd();
-        wedstrijd.UitClub = uitclub;
-        wedstrijd.ThuisClub = thuisClub;
+        wedstrijd.uitClub = uitclub;
+        wedstrijd.thuisClub = thuisClub;
         wedstrijd.zaalSessie = zaalSessie
         return await this.wedstrijdRepository.save(wedstrijd)
     }
 
     public async updateWedstrijd(wedstrijdUUID: string, uitclub: Team, thuisClub: Team, thuisGoals: Goal[], uitGoals: Goal[]): Promise<Wedstrijd> {
         const wedstrijd = await this.wedstrijdRepository.findOne({where: {UUID: wedstrijdUUID}})
-        wedstrijd.UitClub = uitclub;
-        wedstrijd.ThuisClub = thuisClub;
-        wedstrijd.ThuisGoals = thuisGoals;
-        wedstrijd.UitGoals = uitGoals;
+        wedstrijd.uitClub = uitclub;
+        wedstrijd.thuisClub = thuisClub;
+        wedstrijd.thuisGoals = thuisGoals;
+        wedstrijd.uitGoals = uitGoals;
         return await this.wedstrijdRepository.save(wedstrijd)
     }
 
@@ -89,18 +89,18 @@ class WedstrijdDAO {
     public async addGoalToWedstrijd(wedstrijdUUID: string, goalType: "thuis" | "uit", goal: Goal): Promise<Wedstrijd> {
         const wedstrijd = await this.getWedstrijd(wedstrijdUUID)
         if (this.isHomeGoal(goalType)) {
-            wedstrijd.ThuisGoals = [].concat(wedstrijd.ThuisGoals, goal);
+            wedstrijd.thuisGoals = [].concat(wedstrijd.thuisGoals, goal);
         } else {
-            wedstrijd.UitGoals = [].concat(wedstrijd.UitGoals, goal);
+            wedstrijd.uitGoals = [].concat(wedstrijd.uitGoals, goal);
         }
         return await this.wedstrijdRepository.save(wedstrijd)
     }
 
     public async beeindigWedstrijd(wedstrijdUUID: string): Promise<Team[]> {
         const wedstrijd = await this.getWedstrijd(wedstrijdUUID)
-        const homeGoals = wedstrijd.ThuisGoals.length
-        const awayGoals = wedstrijd.UitGoals.length
-        return await this.updateTeamsStatsAfterGame(wedstrijd.ThuisClub.UUID, wedstrijd.UitClub.UUID, homeGoals, awayGoals)
+        const homeGoals = wedstrijd.thuisGoals.length
+        const awayGoals = wedstrijd.uitGoals.length
+        return await this.updateTeamsStatsAfterGame(wedstrijd.thuisClub.UUID, wedstrijd.uitClub.UUID, homeGoals, awayGoals)
     }
 
 
@@ -110,18 +110,18 @@ class WedstrijdDAO {
         const awayTeam: Team  = await this.teamDAO.getTeam(awayTeamUUID)
 
         if (this.isDraw(homeGoals, awayGoals)) {
-            homeTeam.Draws += 1;
-            awayTeam.Draws += 1;
+            homeTeam.draws += 1;
+            awayTeam.draws += 1;
         }
 
         if (this.hasHomeTeamWon(homeGoals, awayGoals)) {
-            homeTeam.Wins += 1;
+            homeTeam.wins += 1;
             awayTeam.loses += 1;
         }
 
         if (this.hasAwayTeamWon(homeGoals, awayGoals)) {
             homeTeam.loses += 1;
-            awayTeam.Wins += 1;
+            awayTeam.wins += 1;
         }
         const updatedHomeTeam = await this.teamRepository.save(homeTeam)
         const updatedAwayTeam = await this.teamRepository.save(awayTeam)

@@ -53,7 +53,7 @@ class ZaalSessieService {
     }
 
     private zaalSessieSchema = joi.object({
-        Naam: joi.string().min(3).required()
+        name: joi.string().min(3).required()
     })
 
     public postZaalSessie =  async (req: Request, res: Response) => {
@@ -63,7 +63,7 @@ class ZaalSessieService {
         }
 
         try {
-            const zaalSessie = await this.doa.createZaalSessie(req.body.Naam)
+            const zaalSessie = await this.doa.createZaalSessie(req.body.name)
             return res.status(200).send(zaalSessie)
         } catch (error) {
             console.log(error)
@@ -72,7 +72,7 @@ class ZaalSessieService {
     }
 
     private zaalSessieUpdateSchema = joi.object({
-        Naam: joi.string().min(3).required(),
+        name: joi.string().min(3).required(),
         isklaar: joi.boolean().required()
     })
 
@@ -85,7 +85,7 @@ class ZaalSessieService {
         try {
             const zaalSessieUUID = String(req.params.id)
             await this.handleNonExistingZaalSessie(zaalSessieUUID, res)
-            const zaalSessie = await this.doa.updateZaalSessie(zaalSessieUUID, req.body.Naam, req.body.isklaar)
+            const zaalSessie = await this.doa.updateZaalSessie(zaalSessieUUID, req.body.name, req.body.isklaar)
             return res.status(200).send(zaalSessie)
         } catch (error) {
             return res.status(500).send()

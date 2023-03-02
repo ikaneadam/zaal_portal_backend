@@ -20,14 +20,14 @@ class SpelerDAO {
         const speler = await this.spelerRepository
             .createQueryBuilder('Speler')
             .select('Speler.UUID as UUID')
-            .addSelect('Speler.Naam as Naam')
-            .addSelect('Speler.ImageUrl as ImageUrl')
-            .leftJoin('Speler.Teams', 'teams')
+            .addSelect('Speler.name as name')
+            .addSelect('Speler.imageUrl as imageUrl')
+            .leftJoin('Speler.teams', 'teams')
             .leftJoin('Speler.goals', 'goals')
             .addSelect('Count(DISTINCT(goals))', 'goals')
-            .addSelect('COALESCE(SUM(DISTINCT(teams.Wins)),0)', 'wins')
+            .addSelect('COALESCE(SUM(DISTINCT(teams..wins)),0)', 'wins')
             .addSelect('COALESCE(SUM(DISTINCT(teams.loses)),0)', 'loses')
-            .addSelect('COALESCE(SUM(DISTINCT(teams.Draws)),0)', 'draws')
+            .addSelect('COALESCE(SUM(DISTINCT(teams.draws)),0)', 'draws')
             .groupBy('Speler.UUID')
             .where('Speler.UUID = :id', { id: UUID })
             .getRawOne();
@@ -38,14 +38,14 @@ class SpelerDAO {
         const spelers = await this.spelerRepository
             .createQueryBuilder('Speler')
             .select('Speler.UUID as UUID')
-            .addSelect('Speler.Naam as Naam')
-            .addSelect('Speler.ImageUrl as ImageUrl')
-            .leftJoin('Speler.Teams', 'teams')
+            .addSelect('Speler.name as name')
+            .addSelect('Speler.imageUrl as imageUrl')
+            .leftJoin('Speler.teams', 'teams')
             .leftJoin('Speler.goals', 'goals')
             .addSelect('Count(DISTINCT(goals))', 'goals')
-            .addSelect('COALESCE(SUM(DISTINCT(teams.Wins)),0)', 'wins')
+            .addSelect('COALESCE(SUM(DISTINCT(teams.wins)),0)', 'wins')
             .addSelect('COALESCE(SUM(DISTINCT(teams.loses)),0)', 'loses')
-            .addSelect('COALESCE(SUM(DISTINCT(teams.Draws)),0)', 'draws')
+            .addSelect('COALESCE(SUM(DISTINCT(teams.draws)),0)', 'draws')
             .groupBy('Speler.UUID')
             .getRawMany();
         return spelers
@@ -53,14 +53,14 @@ class SpelerDAO {
 
     public async createSpeler(naam: string, imageUrl: string): Promise<Speler> {
         const speler = new Speler();
-        speler.Naam = naam
-        speler.ImageUrl = imageUrl
+        speler.name = naam
+        speler.imageUrl = imageUrl
         return await this.spelerRepository.save(speler)
     }
 
     public async updateSpeler(spelerUUID: string, naam: string): Promise<Speler> {
         const speler = await this.spelerRepository.findOne({where: {UUID: spelerUUID}})
-        speler.Naam = naam
+        speler.name = naam
         return await this.spelerRepository.save(speler)
     }
 

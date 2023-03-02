@@ -8,21 +8,21 @@ export class Team {
     UUID: string
 
     @Column({ nullable: false})
-    Naam: string
+    name: string
 
-    @ManyToOne(() => ZaalSessie, ZaalSessie => ZaalSessie.Teams)
+    @ManyToOne(() => ZaalSessie, ZaalSessie => ZaalSessie.teams)
     zaalSessie: ZaalSessie
 
-    @ManyToMany(() => Speler, (speler) => speler.Teams, {eager: true})
+    @ManyToMany(() => Speler, (speler) => speler.teams, {eager: true})
     @JoinTable()
-    Spelers: Speler[];
+    spelers: Speler[];
 
     @Column({ nullable: true, default: 0})
-    Wins: number = 0
+    wins: number = 0
 
     @Column({ nullable: true, default: 0})
     loses: number = 0
 
     @Column({ nullable: true, default: 0})
-    Draws: number = 0
+    draws: number = 0
 }

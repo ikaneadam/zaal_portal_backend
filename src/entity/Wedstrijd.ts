@@ -8,20 +8,20 @@ export class Wedstrijd {
     @PrimaryGeneratedColumn('uuid')
     UUID: string
 
-    @ManyToOne(() => ZaalSessie, ZaalSessie => ZaalSessie.Wedstrijden)
+    @ManyToOne(() => ZaalSessie, ZaalSessie => ZaalSessie.wedstrijden)
     zaalSessie: ZaalSessie
 
     @OneToOne(() => Team, {cascade: true})
     @JoinColumn()
-    ThuisClub: Team
+    thuisClub: Team
 
     @OneToOne(() => Team, {cascade: true})
     @JoinColumn()
-    UitClub: Team
+    uitClub: Team
 
     @OneToMany(() => Goal, (goal) => goal.thuiSwedstrijd, {cascade: ["insert"], eager: true})
-    ThuisGoals: Goal[]
+    thuisGoals: Goal[]
 
     @OneToMany(() => Goal, (goal) => goal.uiTwedstrijd, {cascade: ["insert"], eager: true})
-    UitGoals: Goal[]
+    uitGoals: Goal[]
 }
