@@ -9,7 +9,7 @@ export class Goal {
     UUID: string
 
     @ManyToOne(() => Speler, {eager: true})
-    Scoorder: Speler
+    scoorder: Speler
 
     // @ManyToOne(() => Speler)
     // Assister: Speler

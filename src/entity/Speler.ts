@@ -10,7 +10,7 @@ export class Speler {
     @ManyToMany(() => Team, team => team.spelers)
     teams: Team[];
 
-    @OneToMany(() => Goal, (goal) => goal.Scoorder)
+    @OneToMany(() => Goal, (goal) => goal.scoorder)
     goals: Goal[];
 
     // @OneToMany(() => Goal, (goal) => goal.Assister, { eager : true })
