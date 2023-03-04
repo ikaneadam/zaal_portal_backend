@@ -25,7 +25,7 @@ class SpelerDAO {
             .leftJoin('Speler.teams', 'teams')
             .leftJoin('Speler.goals', 'goals')
             .addSelect('Count(DISTINCT(goals))', 'goals')
-            .addSelect('COALESCE(SUM(DISTINCT(teams..wins)),0)', 'wins')
+            .addSelect('COALESCE(SUM(DISTINCT(teams.wins)),0)', 'wins')
             .addSelect('COALESCE(SUM(DISTINCT(teams.loses)),0)', 'loses')
             .addSelect('COALESCE(SUM(DISTINCT(teams.draws)),0)', 'draws')
             .groupBy('Speler.UUID')
