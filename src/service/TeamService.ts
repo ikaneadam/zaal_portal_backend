@@ -70,8 +70,14 @@ class TeamService {
     }
 
     private speler = joi.object().keys({
+        uuid: joi.string(),
+        imageurl: joi.string(),
         UUID: joi.string().guid().required(),
         name: joi.string().min(5).required(),
+        goals: joi.string(),
+        loses: joi.string(),
+        draws: joi.string(),
+        wins: joi.string(),
     })
 
     private teamSchema = joi.object({
