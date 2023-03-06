@@ -73,7 +73,7 @@ class TeamService {
         uuid: joi.string(),
         imageurl: joi.string(),
         UUID: joi.string().guid().required(),
-        name: joi.string().min(5).required(),
+        name: joi.string().min(2).required(),
         goals: joi.string(),
         loses: joi.string(),
         draws: joi.string(),
@@ -81,7 +81,7 @@ class TeamService {
     })
 
     private teamSchema = joi.object({
-        name: joi.string().min(3).required(),
+        name: joi.string().min(2).required(),
         spelers: joi.array().items(this.speler).required()
     })
 
@@ -103,7 +103,7 @@ class TeamService {
     }
 
     private teamUpdateSchema = joi.object({
-        name: joi.string().min(3).required(),
+        name: joi.string().min(2).required(),
         spelers: joi.array().items(this.speler).required(),
         wins: joi.number().greater(0).required(),
         loses: joi.number().greater(0).required(),

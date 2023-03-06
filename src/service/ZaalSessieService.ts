@@ -53,7 +53,7 @@ class ZaalSessieService {
     }
 
     private zaalSessieSchema = joi.object({
-        name: joi.string().min(3).required()
+        name: joi.string().min(2).required()
     })
 
     public postZaalSessie =  async (req: Request, res: Response) => {
@@ -72,7 +72,7 @@ class ZaalSessieService {
     }
 
     private zaalSessieUpdateSchema = joi.object({
-        name: joi.string().min(3).required(),
+        name: joi.string().min(2).required(),
         isklaar: joi.boolean().required()
     })
 
