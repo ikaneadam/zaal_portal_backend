@@ -32,6 +32,9 @@ class ZaalSessieDAO {
             relations: {
                 wedstrijden: true,
                 teams: true,
+            },
+            order: {
+                created_at: "DESC"
             }
         });
         return zaalSessies;

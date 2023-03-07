@@ -54,13 +54,9 @@ class WedstrijdService {
     }
 
     public getWedstrijd =  async (req: Request, res: Response) => {
-        const zaalSessieUUID = req.params.zaalSessieId
         const wedstrijdUUID = req.params.wedstrijdId
-
-        await this.handleNonExistingZaalSessie(zaalSessieUUID, res)
-
         if(wedstrijdUUID === undefined){
-            await this.getWedstrijden(zaalSessieUUID, req, res)
+            await this.getWedstrijden(req, res)
         } else{
             await this.getSingleWedstrijd(wedstrijdUUID, req, res)
         }
@@ -77,9 +73,9 @@ class WedstrijdService {
         }
     }
 
-    private getWedstrijden =  async (zaalSessieUUID: string, req: Request, res: Response) => {
+    private getWedstrijden =  async (req: Request, res: Response) => {
         try{
-            const teams = await this.wedstrijdDAO.getWedstrijden(zaalSessieUUID)
+            const teams = await this.wedstrijdDAO.getWedstrijden()
             return res.status(200).send(teams)
         }catch (e){
             return res.status(500).send()

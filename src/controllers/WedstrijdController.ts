@@ -11,7 +11,7 @@ class WedstrijdController {
     }
 
     public routes(){
-        this.router.get(this.path, this.service.getWedstrijd)
+        this.router.get('/api/wedstrijden/:wedstrijdId?', this.service.getWedstrijd)
         this.router.post(this.path, this.service.postWedstrijd)
         this.router.post('/api/wedstrijden/:wedstrijdId?/goal', this.service.postAddGoalToWedstrijd)
         this.router.post('/api/wedstrijden/:wedstrijdId?/beeindig', this.service.postBeeindigWedstrijd)
