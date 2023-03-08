@@ -17,7 +17,12 @@ class ZaalSessieDAO {
     public async getZaalSessie(UUID: string): Promise<ZaalSessie> {
         const zaalSessie = await this.zaalSessieRepository.findOne({
                 relations: {
-                    wedstrijden: true,
+                    wedstrijden: {
+                        uitClub: true,
+                        thuisClub: true,
+                        thuisGoals: true,
+                        uitGoals: true
+                    },
                     teams: true,
                 },
                 where: {
