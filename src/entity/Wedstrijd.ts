@@ -11,11 +11,11 @@ export class Wedstrijd {
     @ManyToOne(() => ZaalSessie, ZaalSessie => ZaalSessie.wedstrijden)
     zaalSessie: ZaalSessie
 
-    @OneToOne(() => Team, {cascade: true})
+    @OneToOne(() => Team, {createForeignKeyConstraints: false, eager: true})
     @JoinColumn()
     thuisClub: Team
 
-    @OneToOne(() => Team, {cascade: true})
+    @OneToOne(() => Team, {createForeignKeyConstraints: false, eager: true})
     @JoinColumn()
     uitClub: Team
 

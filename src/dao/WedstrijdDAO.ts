@@ -32,6 +32,9 @@ class WedstrijdDAO {
                 relations: {
                     thuisClub: true,
                     uitClub: true,
+                    uitGoals: true,
+                    thuisGoals: true,
+                    zaalSessie: true
                 },
                 where: {
                     UUID: UUID}
@@ -40,18 +43,14 @@ class WedstrijdDAO {
         return wedstrijd
     }
 
-    public async getWedstrijden(ZaalSessieUUID: string): Promise<Wedstrijd[]> {
+    public async getWedstrijden(): Promise<Wedstrijd[]> {
         const wedstrijd = await this.wedstrijdRepository.find({
             relations: {
                 thuisClub: true,
                 uitClub: true,
                 uitGoals: true,
-                thuisGoals: true
-            },
-            where: {
-                zaalSessie: {
-                    UUID: ZaalSessieUUID
-                }
+                thuisGoals: true,
+                zaalSessie: true
             }
         });
         return wedstrijd;
