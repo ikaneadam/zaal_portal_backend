@@ -6,7 +6,7 @@
    "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
       "start:cli": "nodemon src/server.ts",
-      "start": "npm i && ts-node src/server.ts",
+      "start": "npm i",
       "start:docker": "nodemon -L src/server.ts"
    },
    "keywords": [],
