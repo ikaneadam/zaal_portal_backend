@@ -12,7 +12,6 @@
    "keywords": [],
    "author": "",
    "license": "ISC",
-    "type": "module",
     "dependencies": {
       "@types/cors": "^2.8.9",
       "@types/express": "^4.17.9",
